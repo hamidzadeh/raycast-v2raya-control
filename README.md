@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-v2raya Control is a Raycast extension designed to seamlessly manage and control your V2RayA proxy client. It provides quick actions for toggling connections and checking the current status, all without leaving your Raycast window.
+V2raya Control is a Raycast extension made to effortlessly toggle the latest connection of the [V2RayA proxy client](https://github.com/v2rayA/v2rayA) or check its latest status with its APIs. You can easily assign key bindings and your life levels up in a snap.
 
 ## Features
 
