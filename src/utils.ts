@@ -16,18 +16,25 @@ interface V2rayAStatus {
 
 export async function getToken(): Promise<string> {
   const { v2rayaHost, username, password } = getPreferenceValues<Preferences>();
-  const response = await fetch(`${v2rayaHost}/api/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password }),
-  });
-  const data = await response.json();
+  try {
+    const response = await fetch(`${v2rayaHost}/api/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+    const data = await response.json();
 
-  if (data.code !== "SUCCESS" || !data.data?.token) {
-    throw new Error("Authentication failed. Check your credentials!");
+    if (data.code !== "SUCCESS" || !data.data?.token) {
+      throw new Error("Authentication failed. Check your credentials!");
+    }
+
+    return data.data.token;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Failed to get auth token: ${error.message}`);
+    }
+    throw new Error("Failed to get auth token: Unknown error occurred");
   }
-
-  return data.data.token;
 }
 
 export async function checkStatus(token: string): Promise<V2rayAStatus> {
@@ -46,7 +53,7 @@ export async function checkStatus(token: string): Promise<V2rayAStatus> {
 
   const data = await response.json();
   const status: V2rayAStatus = {
-    running: data.data.running,
+    running: data.data.running || false,
   };
 
   if (data.data.running) {
